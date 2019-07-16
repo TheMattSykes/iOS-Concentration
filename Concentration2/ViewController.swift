@@ -17,26 +17,30 @@ class ViewController: UIViewController {
      - Returns: New game of type Concentration
      */
     func requestNewGame() -> Concentration {
-        let game = Concentration(numberOfPairsOfCards: (cardButtons.count+1)/2)
+        let game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
         game.newGame()
         return game
     }
     
+    var numberOfPairsOfCards: Int {
+        return (cardButtons.count+1)/2 // get, read only
+    }
+    
     // Initialise when in use (lazy), instantiate a new game of concentration
-    lazy var game = requestNewGame()
+    private lazy var game = requestNewGame()
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
     
-    @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
     
-    @IBOutlet weak var scoreCountLabel: UILabel!
+    @IBOutlet private weak var scoreCountLabel: UILabel!
     
     @IBAction func newGameButton(_ sender: UIButton) {
         game = requestNewGame()
         updateViewFromModel()
     }
     
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.firstIndex(of: sender) {
             
             // Increase flipCount when card is flipped but not when card is faceUp or matched
@@ -52,7 +56,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -70,15 +74,26 @@ class ViewController: UIViewController {
         scoreCountLabel.text = "Score: \(game.scoreCount)"
     }
     
-    var emoji = [Int:String]() // Dictionary with Int,String
+    private var emoji = [Int:String]() // Dictionary with Int,String
     
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         if emoji[card.identifier] == nil, game.emojiChoices.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(game.emojiChoices.count)))
-            emoji[card.identifier] = game.emojiChoices.remove(at: randomIndex)
+            emoji[card.identifier] = game.emojiChoices.remove(at: game.emojiChoices.count.arc4random)
         }
         
         // Return unwrapped if not nil, if nil return ?
         return emoji[card.identifier] ?? "?"
+    }
+}
+
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self > 0 {
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        } else {
+            return 0
+        }
     }
 }
