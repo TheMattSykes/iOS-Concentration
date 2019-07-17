@@ -17,7 +17,7 @@ class ViewController: UIViewController {
      - Returns: New game of type Concentration
      */
     func requestNewGame() -> Concentration {
-        let game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+        var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
         game.newGame()
         return game
     }
@@ -31,12 +31,27 @@ class ViewController: UIViewController {
     
     @IBOutlet private var cardButtons: [UIButton]!
     
-    @IBOutlet private weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel! {
+        didSet {
+            updateFlipCountLabel()
+        }
+    }
     
-    @IBOutlet private weak var scoreCountLabel: UILabel!
+    private let attributes: [NSAttributedString.Key:Any] = [
+        .strokeWidth : 5.0,
+        .strokeColor : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+    ]
+    
+    @IBOutlet private weak var scoreCountLabel: UILabel! {
+        didSet {
+            updateScoreCountLabel()
+        }
+    }
     
     @IBAction func newGameButton(_ sender: UIButton) {
         game = requestNewGame()
+        updateFlipCountLabel()
+        updateScoreCountLabel()
         updateViewFromModel()
     }
     
@@ -50,10 +65,20 @@ class ViewController: UIViewController {
             }
             
             game.chooseCard(at: cardNumber)
+            updateFlipCountLabel()
+            updateScoreCountLabel()
             updateViewFromModel()
         } else {
             print("chosen card was not in cardButtons")
         }
+    }
+    
+    private func updateFlipCountLabel() {
+        flipCountLabel.attributedText = NSAttributedString(string: "Flips: \(game.flipCount)", attributes: attributes)
+    }
+    
+    private func updateScoreCountLabel() {
+        scoreCountLabel.attributedText = NSAttributedString(string: "Score: \(game.scoreCount)", attributes: attributes)
     }
     
     private func updateViewFromModel() {
@@ -69,20 +94,18 @@ class ViewController: UIViewController {
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
             }
         }
-        
-        flipCountLabel.text = "Flips: \(game.flipCount)"
-        scoreCountLabel.text = "Score: \(game.scoreCount)"
     }
     
-    private var emoji = [Int:String]() // Dictionary with Int,String
+    private var emoji = [Card:String]() // Dictionary with Int,String
     
     private func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, game.emojiChoices.count > 0 {
-            emoji[card.identifier] = game.emojiChoices.remove(at: game.emojiChoices.count.arc4random)
+        if emoji[card] == nil, game.emojiChoices.count > 0 {
+            let randomStringIndex = game.emojiChoices.index(game.emojiChoices.startIndex, offsetBy: game.emojiChoices.count.arc4random)
+            emoji[card] = String(game.emojiChoices.remove(at: randomStringIndex))
         }
         
         // Return unwrapped if not nil, if nil return ?
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
 }
 

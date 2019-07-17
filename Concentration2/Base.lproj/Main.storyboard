@@ -204,12 +204,12 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6z3-se-0sh" secondAttribute="trailing" constant="16" id="2r3-KD-l6u"/>
+                            <constraint firstItem="NM0-bq-TUT" firstAttribute="top" secondItem="kCa-A3-pkA" secondAttribute="bottom" constant="8" id="6oj-GE-HMr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NM0-bq-TUT" secondAttribute="trailing" constant="16" id="FNY-AI-7uW"/>
                             <constraint firstItem="6z3-se-0sh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="FjN-gx-Z4o"/>
                             <constraint firstItem="6z3-se-0sh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="G5b-eh-BbX"/>
                             <constraint firstItem="NM0-bq-TUT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Gy8-a7-M0C"/>
-                            <constraint firstItem="kCa-A3-pkA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6z3-se-0sh" secondAttribute="bottom" id="OQa-Z6-pO2"/>
-                            <constraint firstItem="NM0-bq-TUT" firstAttribute="top" secondItem="kCa-A3-pkA" secondAttribute="bottom" constant="10" id="SzT-Hf-cQq"/>
+                            <constraint firstItem="kCa-A3-pkA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6z3-se-0sh" secondAttribute="bottom" constant="5" id="OQa-Z6-pO2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="NM0-bq-TUT" secondAttribute="bottom" constant="20.5" id="aob-h5-hbJ"/>
                             <constraint firstItem="kCa-A3-pkA" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="feR-6l-K5l"/>
                         </constraints>
